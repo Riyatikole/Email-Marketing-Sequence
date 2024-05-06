@@ -1,4 +1,4 @@
-export const host = "http://localhost:8000";
+export const host = "https://email-marketing-sequence.vercel.app";
 export const signUpRoute = `${host}/api/users`;
 export const loginRoute = `${host}/api/auth`;
 export const nodeRoute = `${host}/api/node`;

@@ -15,8 +15,9 @@ connection();
 app.use(express.json());
 app.use(cors(
     {
-        // origin: {""},
+        origin: {"https://email-marketing-sequence-frontend-sbyo.vercel.app"},
         methods: ['POST', 'GET'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
         credentials: true
     }
 ));
