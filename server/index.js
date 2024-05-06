@@ -14,7 +14,7 @@ connection();
 //middlewares
 app.use(express.json());
 app.use(cors({
-  origin: "https://email-marketing-sequence-frontend-sbyo.vercel.app",
+  origin: "https://email-marketing-sequence-frontend-sbyo.vercel.app/",
   methods: ['POST', 'GET'],
   credentials: true
 }));
