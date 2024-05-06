@@ -42,7 +42,6 @@ const token = localStorage.getItem("token"); // Adjust this based on your authen
 if (!token) {
   // Handle case where token is not present
   console.error("JWT token is not present in localStorage");
-  
 }
 
 // Include the JWT token in the request headers
@@ -56,6 +55,7 @@ function FlowChart() {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
   const [newNodeLabel, setNewNodeLabel] = useState("");
+  const [newNodeDescription, setNewNodeDescription] = useState("");
   const [newNodeType, setNewNodeType] = useState("default");
 
   const [selectedNodeId, setSelectedNodeId] = useState(null);
@@ -106,7 +106,7 @@ function FlowChart() {
   const addNode = () => {
     const newNodeId = String(nodes.length + 1);
     const iconMap = {
-      default: <IoAddSharp />,
+  
       email: <MdOutlineEmail />,
       wait: <FaRegClock />,
       decision: <FcNeutralDecision />,
@@ -117,7 +117,8 @@ function FlowChart() {
       type: "textUpdater",
       data: {
         label: newNodeLabel || `Node ${newNodeId}`,
-        icon: iconMap[newNodeType] || <IoAddSharp />,
+        description: newNodeDescription || "",
+        icon: iconMap[newNodeType] || "",
         contentType: newNodeType,
       },
       position: { x: 200, y: 200 },
@@ -151,7 +152,7 @@ function FlowChart() {
   const handleGetNode = async (e) => {
     try {
       const iconMap = {
-        default: <IoAddSharp />,
+       
         email: <MdOutlineEmail />,
         wait: <FaRegClock />,
         decision: <FcNeutralDecision />,
@@ -164,7 +165,7 @@ function FlowChart() {
         ...node,
         data: {
           ...node.data,
-          icon: iconMap[node.contentType] || <IoAddSharp />,
+          icon: iconMap[node.contentType] || "",
           contentType: node.contentType,
         },
       }));
@@ -253,6 +254,13 @@ function FlowChart() {
                   value={newNodeLabel}
                   onChange={(e) => setNewNodeLabel(e.target.value)}
                   placeholder="Enter label"
+                  mb="5px"
+                />
+                <Input
+                  type="text"
+                  value={newNodeDescription}
+                  onChange={(e) => setNewNodeDescription(e.target.value)}
+                  placeholder="Enter description"
                   mb="5px"
                 />
                 <Select

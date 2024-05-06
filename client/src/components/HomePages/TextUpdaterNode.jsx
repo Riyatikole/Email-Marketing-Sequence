@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { Handle, Position } from "reactflow";
 
@@ -32,17 +32,23 @@ function TextUpdaterNode({ data, isConnectable }) {
       />
       <Box borderColor="pink" borderWidth="2px" borderRadius="md" p="10px">
         <Flex alignItems="center">
-          <Box
-            mr="5px"
-            color={iconColor}
-            borderRadius={"30%"}
-            borderColor="pink"
-            borderWidth="2px"
-            p="5px"
-          >
-            {data.icon}
-          </Box>
-          <Flex>{data.label}</Flex>
+          {data.icon !== "" && (
+            <Box
+              mr="5px"
+              color={iconColor}
+              borderRadius="30%"
+              borderColor="pink"
+              borderWidth="2px"
+              p="5px"
+            >
+              {data.icon}
+            </Box>
+          )}
+
+          <Flex flexDirection="column">
+            <Text fontWeight={"600"}>{data.label}</Text>
+            <Text fontSize={"10px"}>{data.description}</Text>
+          </Flex>
         </Flex>
       </Box>
       <Handle
