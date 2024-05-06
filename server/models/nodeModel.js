@@ -24,7 +24,12 @@ const nodeSchema = new mongoose.Schema({
     type: {
         type: String,
         // required: true
+    },
+    contentType: {
+        type: String,
+        // required: true
     }
+
 });
 
 const Node = mongoose.model('Node', nodeSchema);

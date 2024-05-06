@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect,useMemo } from 'react';
 import ReactFlow, {
   Controls,
   Background,
@@ -8,7 +8,7 @@ import ReactFlow, {
   BackgroundVariant 
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { Box, Button, Flex, Popover, PopoverTrigger, PopoverContent, PopoverBody, Tooltip, Input, Select, useToast } from '@chakra-ui/react';
+import { Box, Button, Flex, Popover, PopoverTrigger, PopoverContent, PopoverBody, Tooltip, Input, Select, useToast,  } from '@chakra-ui/react';
 import { IoAddSharp } from "react-icons/io5";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { nodeRoute, getNodeRoute, edgeRoute, getEdgeRoute } from '../../utils/APIRoutes';
@@ -29,6 +29,8 @@ import TextUpdaterNode from './TextUpdaterNode';
 const initialNodes = [];
 
 const initialEdges = [];
+
+
 
 function FlowChart() {
   const [nodes, setNodes] = useState(initialNodes);
@@ -65,7 +67,8 @@ const updateNodeLabel = () => {
   setSelectedNodeId(null); // Deselect the node after updating the label
 };
 
-  const nodeTypes = { textUpdater: TextUpdaterNode };
+const nodeTypes = useMemo(() => ({ textUpdater: TextUpdaterNode }), []);
+
 
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -83,11 +86,23 @@ const updateNodeLabel = () => {
 
   const addNode = () => {
     const newNodeId = String(nodes.length + 1);
+    const iconMap = {
+      default: <IoAddSharp />,
+      email: <MdOutlineEmail />,
+      wait: <FaRegClock />,
+      decision: <FcNeutralDecision />,
+    };
+  
     const newNode = {
       id: newNodeId,
-      data: { label: newNodeLabel || `Node ${newNodeId}` }, 
+      type: 'textUpdater',
+      data: { 
+        label: newNodeLabel || `Node ${newNodeId}`,
+        icon: iconMap[newNodeType] || <IoAddSharp />, 
+        contentType: newNodeType
+      }, 
       position: { x: 200, y: 200 },
-      type: newNodeType,
+      contentType: newNodeType
     };
     setNodes((prevNodes) => [...prevNodes, newNode]);
     setNewNodeLabel(''); 
@@ -102,6 +117,7 @@ const updateNodeLabel = () => {
     e.preventDefault();
     try {
         const {data} = await axios.post(nodeRoute, nodes);
+
         const {edgeData} = await axios.post(edgeRoute, edges);
 
         toast({
@@ -120,8 +136,22 @@ const updateNodeLabel = () => {
 const handleGetNode = async (e) => {
    
     try {
+      const iconMap = {
+        default: <IoAddSharp />,
+        email: <MdOutlineEmail />,
+        wait: <FaRegClock />,
+        decision: <FcNeutralDecision />,
+      };
         const response = await axios.get(getNodeRoute, {});
-        setNodes(response.data); 
+        const fetchedNodes = response.data.map(node => ({
+          ...node,
+          data: {
+            ...node.data,
+            icon: iconMap[node.contentType] || <IoAddSharp />,
+            contentType: node.contentType
+          }
+        }));
+        setNodes(fetchedNodes);
         
      
     } catch (error) {
@@ -170,6 +200,7 @@ useEffect(() => {
               onConnect={onConnect}
               fitView
               onNodeClick={handleNodeSelect}
+              nodeTypes={nodeTypes} 
           >
               <Background color="#DB7093" />
               <Controls />

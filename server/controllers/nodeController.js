@@ -26,7 +26,9 @@ module.exports.nodes = async (req, res) => {
                     id: nodeData.id,
                     data: nodeData.data,
                     position: nodeData.position,
-                    type: nodeData.type
+                    type: nodeData.type,
+                    contentType: nodeData.contentType
+
                 });
     
                 const savedNode = await newNode.save();
