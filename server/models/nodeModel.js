@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Schema.Types;
 
 const nodeSchema = new mongoose.Schema({
     id: {
@@ -28,6 +29,10 @@ const nodeSchema = new mongoose.Schema({
     contentType: {
         type: String,
         // required: true
+    },
+    user: {
+        type: ObjectId,
+        required: true
     }
 
 });

@@ -32,7 +32,8 @@ export default function Login() {
         e.preventDefault();
         try {
           const response = await axios.post(loginRoute, data);
-          localStorage.setItem("token", response.data.token);
+         
+          localStorage.setItem("token", response.data.data);
           window.location = "/";
         } catch (error) {
           if (error.response && error.response.status === 400) {

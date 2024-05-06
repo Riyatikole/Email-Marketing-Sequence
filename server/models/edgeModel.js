@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Schema.Types;
 
 const edgeSchema = new mongoose.Schema({
     id: {
@@ -12,6 +13,10 @@ const edgeSchema = new mongoose.Schema({
    
     target: {
         type: String,
+        required: true
+    },
+    user: {
+        type: ObjectId,
         required: true
     }
 });

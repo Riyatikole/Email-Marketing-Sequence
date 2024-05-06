@@ -1,4 +1,6 @@
 const Node = require("../models/nodeModel")
+const mongoose = require('mongoose');
+
 
 module.exports.nodes = async (req, res) => {
   
@@ -27,7 +29,8 @@ module.exports.nodes = async (req, res) => {
                     data: nodeData.data,
                     position: nodeData.position,
                     type: nodeData.type,
-                    contentType: nodeData.contentType
+                    contentType: nodeData.contentType,
+                    user: new mongoose.Types.ObjectId(req.user._id)
 
                 });
     
@@ -46,8 +49,10 @@ module.exports.nodes = async (req, res) => {
 
 module.exports.getnodes = async (req, res) => {
     try {
+       
+        const userId = new mongoose.Types.ObjectId(req.user._id);
         // Retrieve nodes from the database
-        const nodes = await Node.find();
+        const nodes = await Node.find({ user: userId });
 
         // Send the nodes data as the response
         res.status(200).json(nodes);

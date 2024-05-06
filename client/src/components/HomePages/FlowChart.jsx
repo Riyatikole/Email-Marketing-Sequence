@@ -116,9 +116,23 @@ const nodeTypes = useMemo(() => ({ textUpdater: TextUpdaterNode }), []);
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-        const {data} = await axios.post(nodeRoute, nodes);
+      const token = localStorage.getItem('token'); // Adjust this based on your authentication implementation
+        if (!token) {
+          // Handle case where token is not present
+          console.error('JWT token is not present in localStorage');
+          return;
+        }
+    
 
-        const {edgeData} = await axios.post(edgeRoute, edges);
+    // Include the JWT token in the request headers
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+        const {data} = await axios.post(nodeRoute, nodes, config);
+
+        const {edgeData} = await axios.post(edgeRoute, edges, config);
 
         toast({
           title: "Sucessfully Saved", 
@@ -142,7 +156,25 @@ const handleGetNode = async (e) => {
         wait: <FaRegClock />,
         decision: <FcNeutralDecision />,
       };
-        const response = await axios.get(getNodeRoute, {});
+        // const response = await axios.get(getNodeRoute, {});
+
+        const token = localStorage.getItem('token'); // Adjust this based on your authentication implementation
+        if (!token) {
+          // Handle case where token is not present
+          console.error('JWT token is not present in localStorage');
+          return;
+        }
+    
+
+    // Include the JWT token in the request headers
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    // Make the API call with the headers
+    const response = await axios.get(getNodeRoute, config);
         const fetchedNodes = response.data.map(node => ({
           ...node,
           data: {
@@ -163,7 +195,21 @@ const handleGetNode = async (e) => {
 const handleGetEdges = async (e) => {
    
   try {
-      const response = await axios.get(getEdgeRoute, {});
+    const token = localStorage.getItem('token'); // Adjust this based on your authentication implementation
+        if (!token) {
+          // Handle case where token is not present
+          console.error('JWT token is not present in localStorage');
+          return;
+        }
+    
+
+    // Include the JWT token in the request headers
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+      const response = await axios.get(getEdgeRoute, config);
       setEdges(response.data); 
       
    

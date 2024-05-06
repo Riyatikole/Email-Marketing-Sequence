@@ -1,4 +1,5 @@
-const Edge = require("../models/edgeModel")
+const Edge = require("../models/edgeModel");
+const mongoose = require('mongoose');
 
 module.exports.edges = async (req, res) => {
     try {
@@ -8,7 +9,8 @@ module.exports.edges = async (req, res) => {
         const edgesToSave = edgesData.map(edge => ({
             id: edge.id,
             source: edge.source,
-            target: edge.target
+            target: edge.target,
+            user: new mongoose.Types.ObjectId(req.user._id)
         }));
 
         // Assuming Edge is your Mongoose model
@@ -29,8 +31,9 @@ module.exports.edges = async (req, res) => {
 
 module.exports.getedges = async (req, res) => {
     try {
+        const userId = new mongoose.Types.ObjectId(req.user._id);
         // Retrieve nodes from the database
-        const edges= await Edge.find();
+        const edges= await Edge.find({ user: userId });
 
         // Send the nodes data as the response
         res.status(200).json(edges);
