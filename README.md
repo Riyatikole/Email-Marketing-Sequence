@@ -10,7 +10,7 @@ This document provides step-by-step instructions for setting up and running the 
 
 # Installation
 Clone the Repository: Clone the MERN app repository from GitHub or your preferred version control system.
-git clone <repository_url>
+git clone https://github.com/Riyatikole/Email-Marketing-Sequence.git
 
 Navigate to Project Directory: Move into the project directory.
 cd server 
